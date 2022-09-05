@@ -2,30 +2,30 @@
 #include <stdlib.h>
 
 struct Node{
- int num;
+ char num[20];
  struct Node *prox;
 }; 
-typedef struct Node node;
+typedef struct Node nodeList;
 
 int tam;
 
-void inicia(node *LISTA);
+void inicia(nodeList *LISTA);
 int menu(void);
-void opcao(node *LISTA, int op);
-node *criaNo();
-void insereFim(node *LISTA);
-void insereInicio(node *LISTA);
-void exibe(node *LISTA);
-void libera(node *LISTA);
-void insere (node *LISTA);
-node *retiraInicio(node *LISTA);
-node *retiraFim(node *LISTA);
-node *retira(node *LISTA);
+void opcao(nodeList *LISTA, int op);
+nodeList *criaNo();
+void insereFim(nodeList *LISTA);
+void insereInicio(nodeList *LISTA);
+void exibe(nodeList *LISTA);
+void libera(nodeList *LISTA);
+void insere (nodeList *LISTA);
+nodeList *retiraInicio(nodeList *LISTA);
+nodeList *retiraFim(nodeList *LISTA);
+nodeList *retira(nodeList *LISTA);
 
 
 int main(void)
 {
- node *LISTA = (node *) malloc(sizeof(node));
+ nodeList *LISTA = (nodeList *) malloc(sizeof(nodeList));
  if(!LISTA){
   printf("Sem memoria disponivel!\n");
   exit(1);
@@ -44,7 +44,7 @@ int main(void)
  }
 }
 
-void inicia(node *LISTA)
+void inicia(nodeList *LISTA)
 {
  LISTA->prox = NULL;
  tam=0;
@@ -58,8 +58,8 @@ int menu(void)
  printf("0. Sair\n");
  printf("1. Zerar lista\n");
  printf("2. Exibir lista\n");
- printf("3. Adicionar node no inicio\n");
- printf("4. Adicionar node no final\n");
+ printf("3. Adicionar elemento no inicio\n");
+ printf("4. Adicionar elemento no final\n");
  printf("5. Escolher onde inserir\n");
  printf("6. Retirar do inicio\n");
  printf("7. Retirar do fim\n");
@@ -69,8 +69,8 @@ int menu(void)
  return opt;
 }
 
-void opcao(node *LISTA, int op){
- node *tmp;
+void opcao(nodeList *LISTA, int op){
+ nodeList *tmp;
  switch(op){
   case 0:
    libera(LISTA);
@@ -117,7 +117,7 @@ void opcao(node *LISTA, int op){
  }
 }
 
-int vazia(node *LISTA)
+int vazia(nodeList *LISTA)
 {
  if(LISTA->prox == NULL)
   return 1;
@@ -125,28 +125,28 @@ int vazia(node *LISTA)
   return 0;
 }
 
-node *aloca()
+nodeList *aloca()
 {
- node *novo=(node *) malloc(sizeof(node));
+ nodeList *novo=(nodeList *) malloc(sizeof(nodeList));
  if(!novo){
   printf("Sem memoria disponivel!\n");
   exit(1);
  }else{
-  printf("Novo elemento: "); scanf("%d", &novo->num);
+  printf("Novo elemento: "); scanf("%s", &novo->num);
   return novo;
  }
 }
 
 
-void insereFim(node *LISTA)
+void insereFim(nodeList *LISTA)
 {
- node *novo=aloca();
+ nodeList *novo=aloca();
  novo->prox = NULL;
  
  if(vazia(LISTA))
   LISTA->prox=novo;
  else{
-  node *tmp = LISTA->prox;
+  nodeList *tmp = LISTA->prox;
   
   while(tmp->prox != NULL)
    tmp = tmp->prox;
@@ -156,10 +156,10 @@ void insereFim(node *LISTA)
  tam++;
 }
 
-void insereInicio(node *LISTA)
+void insereInicio(nodeList *LISTA)
 {
- node *novo=aloca(); 
- node *oldHead = LISTA->prox;
+ nodeList *novo=aloca(); 
+ nodeList *oldHead = LISTA->prox;
  
  LISTA->prox = novo;
  novo->prox = oldHead;
@@ -167,7 +167,7 @@ void insereInicio(node *LISTA)
  tam++;
 }
 
-void exibe(node *LISTA)
+void exibe(nodeList *LISTA)
 {
  system("clear");
  if(vazia(LISTA)){
@@ -175,11 +175,12 @@ void exibe(node *LISTA)
   return ;
  }
  
- node *tmp;
+ nodeList *tmp;
  tmp = LISTA->prox;
  printf("Lista:");
  while( tmp != NULL){
-  printf("%5d", tmp->num);
+  printf("%5s",tmp->num);
+
   tmp = tmp->prox;
  }
  printf("\n        ");
@@ -194,9 +195,9 @@ void exibe(node *LISTA)
  printf("\n\n");
 }
 
-void libera(node *LISTA){
+void libera(nodeList *LISTA){
  if(!vazia(LISTA)){
-  node *proxNode,
+  nodeList *proxNode,
      *atual;
   
   atual = LISTA->prox;
@@ -208,7 +209,7 @@ void libera(node *LISTA){
  }
 }
 
-void insere(node *LISTA)
+void insere(nodeList *LISTA)
 {
  int pos,
   count;
@@ -219,9 +220,9 @@ void insere(node *LISTA)
   if(pos==1)
    insereInicio(LISTA);
   else{
-   node *atual = LISTA->prox,
+   nodeList *atual = LISTA->prox,
      *anterior=LISTA; 
-   node *novo=aloca();
+   nodeList *novo=aloca();
      
    for(count=1 ; count < pos ; count++){
      anterior=atual;
@@ -236,13 +237,13 @@ void insere(node *LISTA)
   printf("Elemento invalido\n\n");  
 }
 
-node *retiraInicio(node *LISTA)
+nodeList *retiraInicio(nodeList *LISTA)
 {
  if(LISTA->prox == NULL){
   printf("Lista ja esta vazia\n");
   return NULL;
  }else{
-  node *tmp = LISTA->prox;
+  nodeList *tmp = LISTA->prox;
   LISTA->prox = tmp->prox;
   tam--;
   return tmp;
@@ -250,13 +251,13 @@ node *retiraInicio(node *LISTA)
     
 }
 
-node *retiraFim(node *LISTA)
+nodeList *retiraFim(nodeList *LISTA)
 {
  if(LISTA->prox == NULL){
   printf("Lista ja vazia\n\n");
   return NULL;
  }else{
-  node *ultimo = LISTA->prox,
+  nodeList *ultimo = LISTA->prox,
     *penultimo = LISTA;
     
   while(ultimo->prox != NULL){
@@ -270,7 +271,7 @@ node *retiraFim(node *LISTA)
  }
 }
 
-node *retira(node *LISTA)
+nodeList *retira(nodeList *LISTA)
 {
  int opt,
   count;
@@ -281,7 +282,7 @@ node *retira(node *LISTA)
   if(opt==1)
    return retiraInicio(LISTA);
   else{
-   node *atual = LISTA->prox,
+   nodeList *atual = LISTA->prox,
      *anterior=LISTA; 
      
    for(count=1 ; count < opt ; count++){
