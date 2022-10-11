@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct dadosCliente{
+int id_cliente;
+char nome[81];
+char cpf[41];
+char item;
+};
+typedef struct dadosCliente dataCliente;
+
+struct Hash {
+	char peca[80]
+};
+typedef struct Hash hashTab;
+
+
+int function_distrib (int id_cliente) {
+return (id_cliente % 6);
+}
+
+dataCliente* insere_Esp (Hash tab, int id_cliente, char* nome, char* cpf, char item) {
+int h = funcao_Esp(id_cliente);
+while (tab[h] != NULL) {
+if (tab[h] -> id_cliente == id_cliente)
+break;
+h = (h + 1) % 6;
+}
+if (tab[h] == NULL) {
+	tab[h] = (dataCliente)* malloc(sizeof(dataCliente));
+tab[h] -> id_cliente = id_cliente;
+}
+strcpy(tab[h] -> nome, nome);
+strcpy(tab[h] -> ecpf, cpf);
+tab[h] -> item, item;
+return tab[h];
+}
+
+
+void remove_Esp(Hash tab, int id_cliente){
+int h = function_distrib(id_cliente);
+if(tab[h] -> id_cliente == id_cliente) {
+tab[h] = NULL;
+printf(“\n identificação excluida!”);
+}else{
+printf(“\nidentificação nao encontrado”);
+}
+}
+
+dataCliente* busca_tabela(Hash tab, int id_cliente){
+	int h = function_distrib(id_cliente);
+	while(tab(h) != NULL) {
+		if(tab[h] -> id_cliente == id_cliente)
+		return tab[h];
+		h = (h++) % 6 ;
+	}
+	return NULL;
+}
+
+
+
+
+int main(void) {
+	do{
+  	  opt=menu();
+  	  opcao(dataCliente,opt);
+ }while(opt);
+	
+}
+
+int menu(void){
+ int opt;
+ 
+ printf("Escolha a opcao\n");
+ printf("0. Sair\n");
+ printf("1. Cadastrar dados do cliente\n");
+ printf("2. Inserir dados do cliente\n");
+ printf("3. Remover dados do cliente\n");
+ printf("4. Buscar dados do cliente\n");
+ printf("Opcao: "); scanf("%d", &opt);
+ 
+ return opt;
+}
+
+void opcao(nodeList *dataCliente, int op){
+ nodeList *tmp;
+ switch(op){
+  case 1:
+ 
+   insere_Esp(dataCliente);
+   break;
+  
+  case 2:
+   exibe(dataCliente);
+   break;
+
+  case 3:
+    remove_Esp(dataCliente);
+   break;
+   
+   case 4:
+    busca_tabela(dataCliente);
+   break;
+  
+  default:
+   printf("Comando invalido\n\n");
+ }
+}
